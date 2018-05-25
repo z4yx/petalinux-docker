@@ -50,23 +50,24 @@ ARG PETA_RUN_FILE
 RUN locale-gen en_US.UTF-8 && update-locale
 
 #make a Vivado user
-RUN adduser --disabled-password --gecos '' vivado
-RUN usermod -aG sudo vivado
-RUN echo "vivado ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-WORKDIR /home/vivado
+RUN adduser --disabled-password --gecos '' vivado && \
+  usermod -aG sudo vivado && \
+  echo "vivado ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 COPY accept-eula.sh ${PETA_RUN_FILE} /
 
 # run the install
 RUN chmod a+x /${PETA_RUN_FILE} && \
   mkdir -p /opt/Xilinx && \
-  chmod 777 /opt/Xilinx && \
+  chmod 777 /tmp /opt/Xilinx && \
+  cd /tmp && \
   sudo -u vivado /accept-eula.sh /${PETA_RUN_FILE} /opt/Xilinx/petalinux && \
   rm -f /${PETA_RUN_FILE} /accept-eula.sh 
 
 USER vivado
 ENV HOME /home/vivado
-ENV PETA_VERSION ${PETA_VERSION}
+RUN mkdir /home/vivado/work
+WORKDIR /home/vivado/work
 
 #add vivado tools to path
 RUN echo "source /opt/Xilinx/petalinux/settings.sh" >> /home/vivado/.bashrc
