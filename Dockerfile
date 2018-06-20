@@ -42,6 +42,7 @@ RUN sed -i.bak s/archive.ubuntu.com/mirror.tuna.tsinghua.edu.cn/g /etc/apt/sourc
   autoconf \
   lsb-release \
   libtool \
+  libtool-bin \
   locales \
   git
 
