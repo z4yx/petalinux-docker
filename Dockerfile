@@ -28,6 +28,7 @@ RUN sed -i.bak s/archive.ubuntu.com/mirror.tuna.tsinghua.edu.cn/g /etc/apt/sourc
   libglib2.0-dev \
   lib32z1-dev \
   zlib1g:i386 \
+  libgtk2.0-0 \
   screen \
   pax \
   diffstat \
@@ -66,8 +67,9 @@ RUN chmod a+x /${PETA_RUN_FILE} && \
 
 USER vivado
 ENV HOME /home/vivado
-RUN mkdir /home/vivado/work
-WORKDIR /home/vivado/work
+ENV LANG en_US.UTF-8
+RUN mkdir /home/vivado/project
+WORKDIR /home/vivado/project
 
 #add vivado tools to path
 RUN echo "source /opt/Xilinx/petalinux/settings.sh" >> /home/vivado/.bashrc
