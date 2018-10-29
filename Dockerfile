@@ -44,6 +44,7 @@ RUN sed -i.bak s/archive.ubuntu.com/mirror.tuna.tsinghua.edu.cn/g /etc/apt/sourc
   libtool \
   libtool-bin \
   locales \
+  kmod \
   git
 
 ARG PETA_VERSION
