@@ -22,6 +22,5 @@ expect {
 }
 
 set timeout -1
-expect "INFO: Checking PetaLinux installer integrity..."
 expect "INFO: PetaLinux SDK has been installed"
 #interact

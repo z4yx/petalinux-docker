@@ -7,7 +7,9 @@ MAINTAINER z4yx <z4yx@users.noreply.github.com>
 #install dependences:
 RUN sed -i.bak s/archive.ubuntu.com/mirror.tuna.tsinghua.edu.cn/g /etc/apt/sources.list && \
   dpkg --add-architecture i386 && apt-get update && apt-get install -y \
+  tree \
   build-essential \
+  bc \
   sudo \
   tofrodos \
   iproute2 \
@@ -24,17 +26,10 @@ RUN sed -i.bak s/archive.ubuntu.com/mirror.tuna.tsinghua.edu.cn/g /etc/apt/sourc
   wget \
   socat \
   gcc-multilib \
-  libsdl1.2-dev \
   libglib2.0-dev \
   lib32z1-dev \
   zlib1g:i386 \
-  libgtk2.0-0 \
-  screen \
-  pax \
   diffstat \
-  xvfb \
-  xterm \
-  texinfo \
   gzip \
   unzip \
   cpio \
@@ -62,10 +57,12 @@ COPY accept-eula.sh ${PETA_RUN_FILE} /
 # run the install
 RUN chmod a+x /${PETA_RUN_FILE} && \
   mkdir -p /opt/Xilinx && \
-  chmod 777 /tmp /opt/Xilinx && \
+  chmod 777 /tmp /opt /opt/Xilinx && \
   cd /tmp && \
-  sudo -u vivado /accept-eula.sh /${PETA_RUN_FILE} /opt/Xilinx/petalinux && \
-  rm -f /${PETA_RUN_FILE} /accept-eula.sh 
+  sudo -u vivado /accept-eula.sh /${PETA_RUN_FILE} /opt/Xilinx; \
+  sudo -u vivado /opt/Xilinx/tools/yocto-sdk/petalinux-glibc-x86_64-buildtools-* -y -d /opt/Xilinx/tools/yocto-sdk
+
+RUN rm -f /${PETA_RUN_FILE} /accept-eula.sh 
 
 USER vivado
 ENV HOME /home/vivado
@@ -74,5 +71,5 @@ RUN mkdir /home/vivado/project
 WORKDIR /home/vivado/project
 
 #add vivado tools to path
-RUN echo "source /opt/Xilinx/petalinux/settings.sh" >> /home/vivado/.bashrc
+RUN echo "source /opt/Xilinx/settings.sh" >> /home/vivado/.bashrc
 
