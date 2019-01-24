@@ -4,8 +4,10 @@ MAINTAINER z4yx <z4yx@users.noreply.github.com>
 
 # build with docker build --build-arg PETA_VERSION=2018.1 --build-arg PETA_RUN_FILE=petalinux-v2018.1-final-installer.run -t petalinux:2018.1 .
 
+ARG UBUNTU_MIRROR=mirror.tuna.tsinghua.edu.cn
+
 #install dependences:
-RUN sed -i.bak s/archive.ubuntu.com/mirror.tuna.tsinghua.edu.cn/g /etc/apt/sources.list && \
+RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && \
   dpkg --add-architecture i386 && apt-get update && apt-get install -y \
   build-essential \
   sudo \
