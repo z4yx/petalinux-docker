@@ -8,7 +8,7 @@ ARG UBUNTU_MIRROR=mirror.tuna.tsinghua.edu.cn
 
 #install dependences:
 RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && \
-  dpkg --add-architecture i386 && apt-get update && apt-get install -y \
+  dpkg --add-architecture i386 && apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   build-essential \
   sudo \
   tofrodos \
@@ -18,6 +18,7 @@ RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && 
   expect \
   libncurses5-dev \
   tftpd \
+  update-inetd \
   libssl-dev \
   flex \
   bison \
@@ -47,7 +48,12 @@ RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && 
   libtool-bin \
   locales \
   kmod \
-  git
+  git \
+  rsync \
+  bc \
+  u-boot-tools \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 ARG PETA_VERSION
 ARG PETA_RUN_FILE
@@ -68,6 +74,10 @@ RUN chmod a+x /${PETA_RUN_FILE} && \
   cd /tmp && \
   sudo -u vivado /accept-eula.sh /${PETA_RUN_FILE} /opt/Xilinx/petalinux && \
   rm -f /${PETA_RUN_FILE} /accept-eula.sh 
+
+# make /bin/sh symlink to bash instead of dash:
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
 USER vivado
 ENV HOME /home/vivado
