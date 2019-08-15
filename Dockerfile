@@ -69,6 +69,7 @@ COPY accept-eula.sh ${PETA_RUN_FILE} /
 
 # run the install
 RUN chmod a+x /${PETA_RUN_FILE} && \
+  chmod a+rx /accept-eula.sh && \
   mkdir -p /opt/Xilinx && \
   chmod 777 /tmp /opt/Xilinx && \
   cd /tmp && \
