@@ -73,7 +73,7 @@ RUN chmod a+rx /${PETA_RUN_FILE} && \
   mkdir -p /opt/Xilinx && \
   chmod 777 /tmp /opt/Xilinx && \
   cd /tmp && \
-  sudo -u vivado /accept-eula.sh /${PETA_RUN_FILE} /opt/Xilinx/petalinux && \
+  sudo -u vivado -i /accept-eula.sh /${PETA_RUN_FILE} /opt/Xilinx/petalinux && \
   rm -f /${PETA_RUN_FILE} /accept-eula.sh 
 
 # make /bin/sh symlink to bash instead of dash:
