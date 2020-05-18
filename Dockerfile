@@ -71,5 +71,4 @@ RUN mkdir /home/vivado/project
 WORKDIR /home/vivado/project
 
 #add vivado tools to path
-RUN echo "source /opt/Xilinx/settings.sh" >> /home/vivado/.bashrc
-
+RUN echo "source /opt/Xilinx/settings.sh; export PATH=$PATH:/opt/Xilinx/tools/hsm/bin" >> /home/vivado/.bashrc
