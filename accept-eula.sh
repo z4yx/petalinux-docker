@@ -4,6 +4,13 @@ set install_dir [lindex $argv 1]
 set installer [lindex $argv 0]
 
 spawn $installer $install_dir
+set timeout 2
+expect {
+    "ERROR: Invalid options:" {spawn $installer -d $install_dir }
+    timeout { }
+}
+
+set timeout 600
 expect "Press Enter to display the license agreements"
 send "\r"
 set timeout 2
