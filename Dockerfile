@@ -52,6 +52,7 @@ RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && 
   rsync \
   bc \
   u-boot-tools \
+  python \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
