@@ -1,14 +1,17 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 MAINTAINER z4yx <z4yx@users.noreply.github.com>
 
-# build with docker build --build-arg PETA_VERSION=2018.1 --build-arg PETA_RUN_FILE=petalinux-v2018.1-final-installer.run -t petalinux:2018.1 .
+# build with "docker build --build-arg PETA_VERSION=2020.2 --build-arg PETA_RUN_FILE=petalinux-v2020.2-final-installer.run -t petalinux:2020.2 ."
 
-ARG UBUNTU_MIRROR=mirror.tuna.tsinghua.edu.cn
+# install dependences:
 
-#install dependences:
-RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && \
-  dpkg --add-architecture i386 && apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
+## Do not pull from China
+# ARG UBUNTU_MIRROR=mirror.tuna.tsinghua.edu.cn
+# RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && \
+#   dpkg --add-architecture i386 && apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
+
+RUN apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   build-essential \
   sudo \
   tofrodos \
@@ -30,7 +33,6 @@ RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && 
   libsdl1.2-dev \
   libglib2.0-dev \
   lib32z1-dev \
-  zlib1g:i386 \
   libgtk2.0-0 \
   screen \
   pax \
@@ -56,6 +58,13 @@ RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && 
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
+RUN dpkg --add-architecture i386 &&  apt-get update &&  \
+      DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
+      zlib1g:i386 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+
 ARG PETA_VERSION
 ARG PETA_RUN_FILE
 
@@ -75,7 +84,7 @@ RUN chmod a+rx /${PETA_RUN_FILE} && \
   chmod 777 /tmp /opt/Xilinx && \
   cd /tmp && \
   sudo -u vivado -i /accept-eula.sh /${PETA_RUN_FILE} /opt/Xilinx/petalinux && \
-  rm -f /${PETA_RUN_FILE} /accept-eula.sh 
+  rm -f /${PETA_RUN_FILE} /accept-eula.sh
 
 # make /bin/sh symlink to bash instead of dash:
 RUN echo "dash dash/sh boolean false" | debconf-set-selections
@@ -89,4 +98,3 @@ WORKDIR /home/vivado/project
 
 #add vivado tools to path
 RUN echo "source /opt/Xilinx/petalinux/settings.sh" >> /home/vivado/.bashrc
-
