@@ -6,10 +6,8 @@ MAINTAINER z4yx <z4yx@users.noreply.github.com>
 
 # install dependences:
 
-## Do not pull from China
-# ARG UBUNTU_MIRROR=mirror.tuna.tsinghua.edu.cn
-# RUN sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && \
-#   dpkg --add-architecture i386 && apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
+ARG UBUNTU_MIRROR
+RUN [ -z "${UBUNTU_MIRROR}" ] || sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list 
 
 RUN apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   build-essential \
