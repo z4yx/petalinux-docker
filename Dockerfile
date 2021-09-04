@@ -34,6 +34,8 @@ RUN apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   libglib2.0-dev \
   lib32z1-dev \
   libgtk2.0-0 \
+  libtinfo5 \
+  xxd \
   screen \
   pax \
   diffstat \
