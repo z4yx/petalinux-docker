@@ -28,6 +28,7 @@ RUN apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   wget \
   socat \
   gcc-multilib \
+  libidn11 \
   libsdl1.2-dev \
   libglib2.0-dev \
   lib32z1-dev \
